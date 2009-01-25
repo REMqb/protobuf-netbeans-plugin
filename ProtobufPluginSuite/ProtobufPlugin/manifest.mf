@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: pl.waw.tabor.netbeans.protobuf
+OpenIDE-Module-Layer: pl/waw/tabor/netbeans/protobuf/layer.xml
+OpenIDE-Module-Localizing-Bundle: pl/waw/tabor/netbeans/protobuf/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
