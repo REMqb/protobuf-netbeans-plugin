@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Actions">
+        <folder name="Tools">
+            <file name="pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.instance"/>
+        </folder>
+    </folder>
+    <folder name="Editors">
+        <folder name="text">
+            <folder name="x-proto">
+                <folder name="Popup">
+                    <file name="pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Tools/pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.instance"/>
+                        <attr name="position" intvalue="400"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+    <folder name="Loaders">
+        <folder name="text">
+            <folder name="x-proto">
+                <folder name="Actions">
+                    <file name="pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Tools/pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.instance"/>
+                        <attr name="position" intvalue="0"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
+    <folder name="Menu">
+        <folder name="Tools">
+            <file name="pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.shadow">
+                <attr name="originalFile" stringvalue="Actions/Tools/pl-waw-tabor-netbeans-protobuf-generator-ProtobufAction.instance"/>
+                <attr name="position" intvalue="1600"/>
+            </file>
+        </folder>
+    </folder>
+</filesystem>
