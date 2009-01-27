@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
@@ -33,8 +34,8 @@ import org.openide.windows.OutputWriter;
  *
  * @author ptab
  */
-class ProtobufGeneratorRunnable implements Runnable {
-
+public class ProtobufGeneratorRunnable implements Runnable {
+    public final static String PROTOC_PATH_KEY="PROTOC_PATH_KEY";
     private Node[] nodes;
     private String additionalArgs;
 
@@ -55,7 +56,7 @@ class ProtobufGeneratorRunnable implements Runnable {
             try {
                 for (int i = 0; i < nodes.length; i++) {
                     DataObject dataObject = (DataObject) nodes[i].getCookie(DataObject.class);
-                    processDataObject(writer,protocPath,"--proto_path=\"/\"", dataObject);
+                    processDataObject(writer,protocPath,"--proto_path=\"/\" "+additionalArgs, dataObject);
                 }
             } catch (InterruptedException ex) {
                 ErrorManager.getDefault().notify(ex);
@@ -98,8 +99,12 @@ class ProtobufGeneratorRunnable implements Runnable {
     }
 
     public String getProtocPath() {
-        return "/usr/bin/protoc";
+//        return "/usr/bin/protoc";
     //   get(ProtobufAction.PROTOC_PATH_KEY, defaultValue);
+        String defaultValue = NbBundle.getMessage(
+                ProtobufAction.class,
+                "ProtocolBuffersPanel_ProtocPathDefault");
+        return Preferences.userNodeForPackage(ProtobufGeneratorRunnable.class).get(ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue);
     }
 
     /** Save the DataObject if it has been modified */

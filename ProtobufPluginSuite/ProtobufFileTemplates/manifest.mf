@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-OpenIDE-Module: pl.waw.tabor.netbeans.protobuf.filetempletes
-OpenIDE-Module-Localizing-Bundle: pl/waw/tabor/netbeans/protobuf/filetempletes/Bundle.properties
-OpenIDE-Module-Layer: pl/waw/tabor/netbeans/protobuf/filetempletes/layer.xml
-OpenIDE-Module-Specification-Version: 1.0
-
