@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package pl.waw.tabor.netbeans.protobuf.generator;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,28 +16,91 @@ import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectUtils;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
+import org.openide.ErrorManager;
 import org.openide.cookies.LineCookie;
 import org.openide.cookies.SaveCookie;
+import org.openide.execution.NbProcessDescriptor;
 import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
+import org.openide.util.NbBundle;
+import org.openide.windows.IOProvider;
+import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
 
 /**
  *
  * @author ptab
  */
-class ProtobufGeneratorRunnable implements Runnable{
+class ProtobufGeneratorRunnable implements Runnable {
 
-    public ProtobufGeneratorRunnable(Node[] activatedNodes, String string) {
+    private Node[] nodes;
+    private String additionalArgs;
+
+    public ProtobufGeneratorRunnable(Node[] activatedNodes, String args) {
+        nodes = activatedNodes;
+        additionalArgs = args;
     }
 
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final String protocPath=getProtocPath();
+        final InputOutput io = IOProvider .getDefault().getIO(NbBundle.
+            getMessage(getClass(), "ProtocResult"), false);
+            io.select(); // Tree tab is selected
+         final OutputWriter writer = io.getOut();
+
+         try{
+        if (new File(protocPath).exists()) {
+            try {
+                for (int i = 0; i < nodes.length; i++) {
+                    DataObject dataObject = (DataObject) nodes[i].getCookie(DataObject.class);
+                    processDataObject(writer,protocPath,"--proto_path=\"/\"", dataObject);
+                }
+            } catch (InterruptedException ex) {
+                ErrorManager.getDefault().notify(ex);
+            } catch (IOException ex) {
+                ErrorManager.getDefault().notify(ex);
+            }
+        } else {
+            writer.println("Executable not found at " + protocPath + ".");
+        }
+         }catch(Exception ex)
+         {
+             ErrorManager.getDefault().notify(ErrorManager.WARNING, ex);
+
+         }finally{
+             writer.close();
+         }
     }
 
-//                    get(ProtobufGenerateAction.PROTOC_PATH_KEY, defaultValue);
-//    }
+    void processDataObject(final OutputWriter writer,final String protocExecutable,final String protocParams,final DataObject dataObject) throws InterruptedException,IOException{
+        forceSave(dataObject);
+        FileObject fileObject = dataObject.getPrimaryFile();
+        File file = FileUtil.toFile(fileObject);
+
+        final FileObject java_out=getJavaSourceDirForNode(dataObject, writer);
+        if (java_out!=null)
+        {
+            String args=protocParams +" --java_out \""+FileUtil.toFile(java_out).toString()+"\" \"" + file.getAbsolutePath() +"\"";
+            writer.println("running: "+protocExecutable+" "+args);
+            NbProcessDescriptor protocProcessDesc =
+                new NbProcessDescriptor( protocExecutable, args);
+            Process process = protocProcessDesc.exec();
+            readOutput(writer, process.getErrorStream(), nodes);
+            process.waitFor();
+            writer.println("Exit: "+process.exitValue());
+            java_out.refresh();
+        }else{
+            writer.println("No Java sorce directory (destination directory)");
+        }
+        writer.flush();
+    }
+
+    public String getProtocPath() {
+        return "/usr/bin/protoc";
+    //   get(ProtobufAction.PROTOC_PATH_KEY, defaultValue);
+    }
 
     /** Save the DataObject if it has been modified */
     void forceSave(DataObject dataObject) throws IOException {
@@ -74,28 +137,26 @@ class ProtobufGeneratorRunnable implements Runnable{
         }
     }
 
-    private FileObject getJavaSourceDirForNode(Node node,OutputWriter writer) {
-        DataObject dataObject = (DataObject) node.getCookie(DataObject.class);
+    private FileObject getJavaSourceDirForNode(DataObject dataObject, OutputWriter writer) {
 
-        Project p=getProject(dataObject.getPrimaryFile());
-        FileObject res=null;
-        if(p!=null)
-        {
+        Project p = getProject(dataObject.getPrimaryFile());
+        FileObject res = null;
+        if (p != null) {
             Sources sources = ProjectUtils.getSources(p);
             SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.SOURCES_TYPE_JAVA);
 
-            for(SourceGroup g:groups)
-            {
-                writer.println("Source group name: "+g.getName());
-                if (!g.getName().equals("${test.src.dir}"))
-                    res=g.getRootFolder();
+            for (SourceGroup g : groups) {
+                //writer.println("Source group name: " + g.getName());
+                if (!g.getName().equals("${test.src.dir}")) {
+                    res = g.getRootFolder();
+                }
             }
 
         }
         return res;
     }
 
-    private Project getProject(FileObject file){
+    private Project getProject(FileObject file) {
         Project p = FileOwnerQuery.getOwner(file);
         return p;
     }
