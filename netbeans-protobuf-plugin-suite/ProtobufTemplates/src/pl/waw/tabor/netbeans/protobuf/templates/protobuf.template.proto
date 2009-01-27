@@ -1,0 +1,4 @@
+
+message massageName{
+    required messageField=0;
+}
