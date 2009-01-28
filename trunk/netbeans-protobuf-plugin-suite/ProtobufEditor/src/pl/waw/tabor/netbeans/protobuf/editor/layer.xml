@@ -5,9 +5,9 @@
         <folder name="text">
             <folder name="x-proto">
                 <file name="language.nbs" url="language.nbs"/>
-                 <!--folder name="CompletionProviders">
-                    <file name="pl-waw-tabor-netbeans-protobuf-ProtobufCompletionProvider.instance"/>
-                </folder-->
+                <folder name="CompletionProviders">
+                    <file name="pl-waw-tabor-netbeans-protobuf-editor-ProtobufCompletionProvider.instance"/>
+                </folder>
             </folder>
         </folder>
     </folder>
