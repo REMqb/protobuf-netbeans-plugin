@@ -52,7 +52,7 @@ final class ProtocolBuffersPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(protocPathLabal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(protocPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
+                .addComponent(protocPathTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 618, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(browseButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -91,7 +91,7 @@ final class ProtocolBuffersPanel extends javax.swing.JPanel {
         String defaultValue = NbBundle.getMessage(
                 ProtobufAction.class,
                 "ProtocolBuffersPanel_ProtocPathDefault");
-        protocPathLabal.setText(Preferences.userNodeForPackage(
+        protocPathTextField.setText(Preferences.userNodeForPackage(
                 ProtobufGeneratorRunnable.class).get(
                 ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue));
     }
