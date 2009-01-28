@@ -88,9 +88,14 @@ public class ProtobufGeneratorRunnable implements Runnable {
             NbProcessDescriptor protocProcessDesc =
                 new NbProcessDescriptor( protocExecutable, args);
             Process process = protocProcessDesc.exec();
-            readOutput(writer, process.getErrorStream(), nodes);
+            ProtobufAnnotation.removeAllAnnotationsForFile(file.getAbsolutePath());
+            readOutput(writer, process.getErrorStream(), nodes,file.getAbsolutePath());
             process.waitFor();
             writer.println("Exit: "+process.exitValue());
+            if(process.exitValue()==0)
+            {
+                
+            }
             java_out.refresh();
         }else{
             writer.println("No Java sorce directory (destination directory)");
@@ -118,7 +123,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
         }
     }
 
-    static void readOutput(OutputWriter writer, InputStream errStream, Node[] nodes) {
+    static void readOutput(OutputWriter writer, InputStream errStream, Node[] nodes,String fileName) {
         ProtobufOutputListener listener = new ProtobufOutputListener(nodes);
         try {
             BufferedReader error = new BufferedReader(new InputStreamReader(errStream));
@@ -131,7 +136,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
                             Integer.parseInt(matcher.group(2)) - 1,
                             Integer.parseInt(matcher.group(3)),
                             "Error",
-                            matcher.group(4));
+                            matcher.group(4),fileName);
                     writer.println(errString, listener);
                 } else {
                     writer.println(errString);

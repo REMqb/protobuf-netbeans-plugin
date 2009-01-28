@@ -7,7 +7,10 @@ package pl.waw.tabor.netbeans.protobuf.generator;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import org.openide.cookies.LineCookie;
 import org.openide.text.Annotatable;
@@ -20,8 +23,7 @@ import org.openide.text.Line;
  */
 class ProtobufAnnotation extends Annotation {
 
-    private static List<Annotation> annotations =
-            new ArrayList<Annotation>();
+    private static Map<String,List<ProtobufAnnotation>> annotations = new HashMap<String, List<ProtobufAnnotation>>();
     private static String[] annoType = {
         "pl-waw-tabor-netbeans-protobuf-generator-tidyerrorannotation"
 //       ,"org-yourorghere-nbtidyintegration-tidywarningannotation"
@@ -29,33 +31,41 @@ class ProtobufAnnotation extends Annotation {
     private String reason;
     private int column;
     private int severity = 0;
+    private String fileName;
 
-    public static ProtobufAnnotation create(
-            String severity, int column, String reason) {
+    public static ProtobufAnnotation create(String severity, int column, String reason,String fileName) {
         ProtobufAnnotation annotation =
-                new ProtobufAnnotation(severity, column, reason);
-        annotations.add(annotation);
+                new ProtobufAnnotation(severity, column, reason,fileName);
+        List<ProtobufAnnotation> list=annotations.get(fileName);
+        if(list==null)
+        {
+            list=new LinkedList<ProtobufAnnotation>();
+            annotations.put(fileName,list);
+        }
+        list.add(annotation);
         return annotation;
     }
 
-    public static void clear() {
-        for (Annotation annotation : annotations) {
-            annotation.detach();
-        }
-    }
+//    public static void clear() {
+//        for (Annotation annotation : annotations) {
+//            annotation.detach();
+//        }
+//    }
 
     public static void remove(ProtobufAnnotation annotation) {
-        annotations.remove(annotation);
+        List<ProtobufAnnotation> list=annotations.get(annotation.fileName);
+        list.remove(annotation);
     }
 
     /**
      * Create a new instance of TidyErrorAnnotation
      */
     private ProtobufAnnotation(String severity,
-            int column, String reason) {
+            int column, String reason,String fileName) {
         this.severity = severity.contains("Err") ? 0 : 1;
         this.reason = reason;
         this.column = column;
+        this.fileName=fileName;
     }
 
     /**
@@ -75,12 +85,12 @@ class ProtobufAnnotation extends Annotation {
 
     /** Create an annotation for a line from a match string */
     public static void createAnnotation(
-            final LineCookie lc, int lineNumber,int columnNumber,String severity, String reason)
+            final LineCookie lc, int lineNumber,int columnNumber,String severity, String reason,String fileName)
             throws IndexOutOfBoundsException, NumberFormatException {
 
         final Line line = lc.getLineSet().getOriginal(lineNumber);
         final ProtobufAnnotation annotation =
-                ProtobufAnnotation.create(severity, columnNumber, reason);
+                ProtobufAnnotation.create(severity, columnNumber, reason,fileName);
         annotation.attach(line);
         line.addPropertyChangeListener(new PropertyChangeListener() {
 
@@ -95,5 +105,19 @@ class ProtobufAnnotation extends Annotation {
                 }
             }
         });
+    }
+
+    public static void removeAllAnnotationsForFile(String fileName)
+    {
+        List<ProtobufAnnotation> list=annotations.get(fileName);
+        if(list!=null)
+        {
+            for(Annotation a:list)
+            {
+                a.detach();
+            }
+            while(list.size()>0)
+               ProtobufAnnotation.remove(list.get(0));
+        }
     }
 }

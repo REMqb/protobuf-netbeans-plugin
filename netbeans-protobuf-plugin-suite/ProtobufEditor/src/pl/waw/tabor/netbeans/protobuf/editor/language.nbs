@@ -49,7 +49,7 @@ TOKEN:start_ncomment:('/*'):<NCOMMENT>
     TOKEN:normal_char:(.)
 }
 
-TOKEN:whitespace:( [" " "\t" "\n" "\r"]+ )
+TOKEN:whitespace:( [" " "\t" "\n" "\r"] )
 
 TOKEN:dot:(".")
 TOKEN:semicolon:(";")
@@ -90,7 +90,8 @@ Option = "option" OptionBody ";";
 OptionBody =  DotIdent "=" Constant;
 Message = "message" MessageName MessageBody;
 Extend = "extend" UserType "{" ( GroupOrField | ";" )* "}";
-Enum = "enum" AnyIdent EnumBody;
+Enum = "enum" EnumName EnumBody;
+EnumName = AnyIdent;
 EnumBody = "{" ( Option | EnumField | ";" )* "}";
 EnumField = AnyIdent "=" IntLit ";";
 Service = "service" AnyIdent ServiceBody;
@@ -152,7 +153,7 @@ NAVIGATOR:Message:{
 }
 
 NAVIGATOR:Enum: {
-    display_name: "enum $AnyIdent$";
+    display_name: "enum $EnumName$";
     isLeaf: "false";
 }
 
