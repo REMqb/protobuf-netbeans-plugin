@@ -18,18 +18,32 @@ import org.openide.windows.OutputEvent;
 import org.openide.windows.OutputListener;
 
 /**
+ * This class formats output from the external tool (protoc compiler) that
+ * shows in the "Output" window. It parses each line and if the line contains
+ * filename, line and column it provided hiperlink to that position.
  *
- * @author ptab
+ * @author <a href="piotr.tabor@gmail.com" (<a href="http://piotr.tabor.waw.pl">http://piotr.tabor.waw.pl</a>)
  */
 class ProtobufOutputListener implements OutputListener{
+    /**
+     * Parsers dependening on protoc output formatt
+     */
     private static final String PATTERN_STRING = "(.*):([0-9]*):([0-9]*):(.*)";
     public static final Pattern PATTERN=Pattern.compile(PATTERN_STRING);
+
+    /**files the protoc was runned on */
     private Node[] nodes;
 
     public ProtobufOutputListener(Node[] activatedNodes) {
         this.nodes=activatedNodes;
     }
 
+    /**
+     * User selected (clicked) that line. We have to open
+     * that file and move cursor to given position.
+     *
+     * @param event
+     */
     public void outputLineAction(OutputEvent event) {
         String lineString = event.getLine();
         Matcher matcher = PATTERN.matcher(lineString);
@@ -55,6 +69,12 @@ class ProtobufOutputListener implements OutputListener{
 //        throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * Find a file (one of files the protoc was runned on)
+     *
+     * @param fileName
+     * @return DataObject connected to the fileName or NULL if not found.
+     */
     public DataObject findDataObjectForFile(String fileName) {
         for(Node node:nodes)
         {

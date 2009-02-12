@@ -11,14 +11,20 @@ import org.openide.util.NbBundle;
 import org.openide.util.RequestProcessor;
 import org.openide.util.actions.CookieAction;
 
+/**
+ * Action that is run when user selects "Regenerate file(s) from this
+ * protobuf definition(s)". 
+ * @author ptab
+ */
 public final class ProtobufAction extends CookieAction {
     static RequestProcessor processor=null;
 
+    /**
+     * We got list of selected nodes (files - {@link DataObject})
+     * @param activatedNodes
+     */
     protected void performAction(Node[] activatedNodes) {
         getProcessor().post(new ProtobufGeneratorRunnable(activatedNodes,""));
-        //DataObject dataObject = activatedNodes[0].getLookup().lookup(DataObject.class);
-        //ExecutionEngine engine=ExecutionEngine.getDefault();
-        //engine.execute(getName(), , null);
     }
 
     protected int mode() {
@@ -29,6 +35,10 @@ public final class ProtobufAction extends CookieAction {
         return NbBundle.getMessage(ProtobufAction.class, "CTL_ProtobufGenerateAction");
     }
 
+    /**
+     * This action work on DataObjects
+     * @return
+     */
     protected Class[] cookieClasses() {
         return new Class[]{DataObject.class};
     }
