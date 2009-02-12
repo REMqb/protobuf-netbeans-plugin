@@ -6,34 +6,53 @@ package pl.waw.tabor.netbeans.protobuf.generator;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import org.openide.cookies.LineCookie;
 import org.openide.text.Annotatable;
 import org.openide.text.Annotation;
 import org.openide.text.Line;
 
 /**
+ * Represents single "error" mark in the *.proto editor connected to errors 
+ * reported by protoc compilert.
  *
- * @author ptab
+ * @author <a href="piotr.tabor@gmail.com" (<a href="http://piotr.tabor.waw.pl">http://piotr.tabor.waw.pl</a>)
  */
 class ProtobufAnnotation extends Annotation {
 
-    private static Map<String,List<ProtobufAnnotation>> annotations = new HashMap<String, List<ProtobufAnnotation>>();
-    private static String[] annoType = {
+    /**
+     * Map from file's path to all annotation that are connected to the file
+     */
+    private static final Map<String,List<ProtobufAnnotation>> annotations = new HashMap<String, List<ProtobufAnnotation>>();
+
+    /**
+     * We support only "error" annotations. 
+     */
+    private static final String[] annoType = {
         "pl-waw-tabor-netbeans-protobuf-generator-tidyerrorannotation"
-//       ,"org-yourorghere-nbtidyintegration-tidywarningannotation"
     };
+
+    /*Description and position of the problem*/
     private String reason;
     private int column;
     private int severity = 0;
     private String fileName;
 
-    public static ProtobufAnnotation create(String severity, int column, String reason,String fileName) {
+    /**
+     * Creates the annotation and puts it in global struct of all annotations {@link #annotations}.
+     *
+     * Does not link the annotation with the line.
+     *
+     * @param severity
+     * @param column
+     * @param reason
+     * @param fileName
+     * @return
+     */
+    private static ProtobufAnnotation create(String severity, int column, String reason,String fileName) {
         ProtobufAnnotation annotation =
                 new ProtobufAnnotation(severity, column, reason,fileName);
         List<ProtobufAnnotation> list=annotations.get(fileName);
@@ -46,13 +65,11 @@ class ProtobufAnnotation extends Annotation {
         return annotation;
     }
 
-//    public static void clear() {
-//        for (Annotation annotation : annotations) {
-//            annotation.detach();
-//        }
-//    }
-
-    public static void remove(ProtobufAnnotation annotation) {
+    /* Removes the annotation from the global struct of all annotations {@link #annotations}
+     *
+     * Doesn't deattach the annotation from the line.
+     */
+    private static void remove(ProtobufAnnotation annotation) {
         List<ProtobufAnnotation> list=annotations.get(annotation.fileName);
         list.remove(annotation);
     }
@@ -83,7 +100,11 @@ class ProtobufAnnotation extends Annotation {
         return reason + " (" + "Column: " + column + ")";
     }
 
-    /** Create an annotation for a line from a match string */
+    /** Create an annotation for a line in the given file.
+     *
+     * <p> Attaches the annotation to the line and sets listener on the line
+     * in case of modification</p>
+     */
     public static void createAnnotation(
             final LineCookie lc, int lineNumber,int columnNumber,String severity, String reason,String fileName)
             throws IndexOutOfBoundsException, NumberFormatException {
@@ -93,18 +114,19 @@ class ProtobufAnnotation extends Annotation {
                 ProtobufAnnotation.create(severity, columnNumber, reason,fileName);
         annotation.attach(line);
         line.addPropertyChangeListener(new PropertyChangeListener() {
-
+            /*If user changes the line - we want to remove the annotation.
+             * User probably just fixed the line.
+             */
             public void propertyChange(PropertyChangeEvent ev) {
                 String type = ev.getPropertyName();
-                if ((type == null) ||
-                        type.equals(Annotatable.PROP_TEXT)) {
-// User edited the line, assume error should be cleared
+                  if ((type == null) ||
+                         type.equals(Annotatable.PROP_TEXT)) {
                     line.removePropertyChangeListener(this);
                     annotation.detach();
                     ProtobufAnnotation.remove(annotation);
-                }
-            }
-        });
+                 }
+             }
+          });
     }
 
     public static void removeAllAnnotationsForFile(String fileName)

@@ -31,19 +31,30 @@ import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
 
 /**
+ * This class takes care on realization of "Regenerate code from selected
+ * protoc definition(s)". It runs protoc compiler on selected files and parses
+ * the output. 
  *
- * @author ptab
+ * @author <a href="piotr.tabor@gmail.com" (<a href="http://piotr.tabor.waw.pl">http://piotr.tabor.waw.pl</a>)
  */
 public class ProtobufGeneratorRunnable implements Runnable {
     public final static String PROTOC_PATH_KEY="PROTOC_PATH_KEY";
     private Node[] nodes;
     private String additionalArgs;
 
+    /**
+     *
+     * @param activatedNodes - selected (by user) nodes (files) in the navigator
+     * @param args - additional arguments to forward to protoc compiler.
+     */
     public ProtobufGeneratorRunnable(Node[] activatedNodes, String args) {
         nodes = activatedNodes;
         additionalArgs = args;
     }
 
+    /**
+     * Runs protoc compiler on all selected nodes. 
+     */
     public void run() {
         final String protocPath=getProtocPath();
         final InputOutput io = IOProvider .getDefault().getIO(NbBundle.
@@ -54,6 +65,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
          try{
         if (new File(protocPath).exists()) {
             try {
+                /*Iterate over selected nodes*/
                 for (int i = 0; i < nodes.length; i++) {
                     DataObject dataObject = (DataObject) nodes[i].getCookie(DataObject.class);
                     processDataObject(writer,protocPath,"--proto_path=\"/\" "+additionalArgs, dataObject);
@@ -75,27 +87,46 @@ public class ProtobufGeneratorRunnable implements Runnable {
          }
     }
 
+    /**
+     * Runs protoc compiler on single *.proto file.
+     *
+     * @param writer
+     * @param protocExecutable
+     * @param protocParams
+     * @param dataObject
+     * @throws java.lang.InterruptedException
+     * @throws java.io.IOException
+     */
     void processDataObject(final OutputWriter writer,final String protocExecutable,final String protocParams,final DataObject dataObject) throws InterruptedException,IOException{
+        /*Ensure the file is saved. Save if not*/
         forceSave(dataObject);
         FileObject fileObject = dataObject.getPrimaryFile();
         File file = FileUtil.toFile(fileObject);
 
         final FileObject java_out=getJavaSourceDirForNode(dataObject, writer);
         if (java_out!=null)
-        {
+        { /*We found destination directory*/
+
+            /*Calculating args and running the process*/
             String args=protocParams +" --java_out \""+FileUtil.toFile(java_out).toString()+"\" \"" + file.getAbsolutePath() +"\"";
             writer.println("running: "+protocExecutable+" "+args);
             NbProcessDescriptor protocProcessDesc =
                 new NbProcessDescriptor( protocExecutable, args);
             Process process = protocProcessDesc.exec();
+
+            /*Removing all old annotations - we will got fresh errors.*/
             ProtobufAnnotation.removeAllAnnotationsForFile(file.getAbsolutePath());
+            /* Parse the errorStream and create fresh annotations*/
             readOutput(writer, process.getErrorStream(), nodes,file.getAbsolutePath());
+            /* Wait until the process finishes.*/
             process.waitFor();
+
             writer.println("Exit: "+process.exitValue());
-            if(process.exitValue()==0)
-            {
-                
-            }
+//            if(process.exitValue()==0)
+//            {
+//                weri
+//            }
+            /*Reload content of the destination directory*/
             java_out.refresh();
         }else{
             writer.println("No Java sorce directory (destination directory)");
@@ -103,9 +134,12 @@ public class ProtobufGeneratorRunnable implements Runnable {
         writer.flush();
     }
 
+    /**
+     * Reads the path to protoc compilet from the configuration
+     * 
+     * @return
+     */
     public String getProtocPath() {
-//        return "/usr/bin/protoc";
-    //   get(ProtobufAction.PROTOC_PATH_KEY, defaultValue);
         String defaultValue = NbBundle.getMessage(
                 ProtobufAction.class,
                 "ProtocolBuffersPanel_ProtocPathDefault");
@@ -123,14 +157,25 @@ public class ProtobufGeneratorRunnable implements Runnable {
         }
     }
 
+    /**
+     * This method reads the inputStream (errStream) and creates error
+     * annotations {@link ProtobufAnnotation} based on messages from the stream. It
+     * also forwards the messages to the writer.
+     *
+     * @param writer
+     * @param errStream
+     * @param nodes
+     * @param fileName
+     */
     static void readOutput(OutputWriter writer, InputStream errStream, Node[] nodes,String fileName) {
         ProtobufOutputListener listener = new ProtobufOutputListener(nodes);
         try {
             BufferedReader error = new BufferedReader(new InputStreamReader(errStream));
             String errString = null;
-            while ((errString = error.readLine()) != null) {
+            while ((errString = error.readLine()) != null) {//for each line
                 Matcher matcher = ProtobufOutputListener.PATTERN.matcher(errString);
-                if (matcher.matches()) {
+                if (matcher.matches()) { //If the line matches pattern of error message
+                    //Create annotation.
                     LineCookie lc = (LineCookie) listener.findDataObjectForFile(matcher.group(1)).getCookie(LineCookie.class);
                     ProtobufAnnotation.createAnnotation(lc,
                             Integer.parseInt(matcher.group(2)) - 1,
@@ -147,8 +192,22 @@ public class ProtobufGeneratorRunnable implements Runnable {
         }
     }
 
-    private FileObject getJavaSourceDirForNode(DataObject dataObject, OutputWriter writer) {
-
+    /**
+     * Returns FileObject that represents directory that is destination for
+     * generated files.
+     *
+     * <p> We finds first directoy that contains JAVA_SOURCES {@link JavaProjectConstants#SOURCES_TYPE_JAVA}. We
+     * also prefer this directory not to be test directory.
+     * </p>
+     *
+     * TODO: This file should be selectable by the user (configurable per project),
+     * or created automatically. 
+     *
+     * @param dataObject
+     * @param writer
+     * @return
+     */
+   private FileObject getJavaSourceDirForNode(DataObject dataObject, OutputWriter writer) {
         Project p = getProject(dataObject.getPrimaryFile());
         FileObject res = null;
         if (p != null) {
@@ -156,16 +215,19 @@ public class ProtobufGeneratorRunnable implements Runnable {
             SourceGroup[] groups = sources.getSourceGroups(JavaProjectConstants.SOURCES_TYPE_JAVA);
 
             for (SourceGroup g : groups) {
-                //writer.println("Source group name: " + g.getName());
                 if (!g.getName().equals("${test.src.dir}")) {
                     res = g.getRootFolder();
                 }
             }
-
         }
         return res;
     }
 
+   /**
+    * Returns project that given file belongs to.
+    * @param file
+    * @return
+    */
     private Project getProject(FileObject file) {
         Project p = FileOwnerQuery.getOwner(file);
         return p;
