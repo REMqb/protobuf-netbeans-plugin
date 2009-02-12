@@ -1,0 +1,6 @@
+
+/* This is example of protobuf message */
+
+message massageName{
+    required uint32 messageField=1;
+}
