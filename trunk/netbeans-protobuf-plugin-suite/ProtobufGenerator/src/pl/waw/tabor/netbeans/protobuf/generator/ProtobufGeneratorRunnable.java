@@ -68,7 +68,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
                 /*Iterate over selected nodes*/
                 for (int i = 0; i < nodes.length; i++) {
                     DataObject dataObject = (DataObject) nodes[i].getCookie(DataObject.class);
-                    processDataObject(writer,protocPath,"--proto_path=\"/\" "+additionalArgs, dataObject);
+                    processDataObject(writer,protocPath,additionalArgs, dataObject);
                 }
             } catch (InterruptedException ex) {
                 ErrorManager.getDefault().notify(ex);
@@ -108,7 +108,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
         { /*We found destination directory*/
 
             /*Calculating args and running the process*/
-            String args=protocParams +" --java_out \""+FileUtil.toFile(java_out).toString()+"\" \"" + file.getAbsolutePath() +"\"";
+            String args=protocParams +"--proto_path=\""+getProjectPath(fileObject)+"\""+" --java_out \""+FileUtil.toFile(java_out).toString()+"\" \"" + file.getAbsolutePath() +"\"";
             writer.println("running: "+protocExecutable+" "+args);
             NbProcessDescriptor protocProcessDesc =
                 new NbProcessDescriptor( protocExecutable, args);
@@ -176,13 +176,18 @@ public class ProtobufGeneratorRunnable implements Runnable {
                 Matcher matcher = ProtobufOutputListener.PATTERN.matcher(errString);
                 if (matcher.matches()) { //If the line matches pattern of error message
                     //Create annotation.
-                    LineCookie lc = (LineCookie) listener.findDataObjectForFile(matcher.group(1)).getCookie(LineCookie.class);
-                    ProtobufAnnotation.createAnnotation(lc,
-                            Integer.parseInt(matcher.group(2)) - 1,
-                            Integer.parseInt(matcher.group(3)),
-                            "Error",
-                            matcher.group(4),fileName);
-                    writer.println(errString, listener);
+                    DataObject dataObject=ProtobufHelper.findDataObjectForFile(matcher.group(1),nodes);
+                    if (dataObject!=null)
+                    {
+                        LineCookie lc = (LineCookie) dataObject.getCookie(LineCookie.class);
+                        ProtobufAnnotation.createAnnotation(lc,
+                                Integer.parseInt(matcher.group(2)) - 1,
+                                Integer.parseInt(matcher.group(3)),
+                                "Error",
+                                matcher.group(4),fileName);
+
+                        writer.println(errString, listener);
+                    }
                 } else {
                     writer.println(errString);
                 }
@@ -231,5 +236,11 @@ public class ProtobufGeneratorRunnable implements Runnable {
     private Project getProject(FileObject file) {
         Project p = FileOwnerQuery.getOwner(file);
         return p;
+    }
+
+    
+    private String getProjectPath(FileObject fileObject) {
+        Project p=getProject( fileObject);
+        return FileUtil.toFile(p.getProjectDirectory()).getAbsolutePath();
     }
 }

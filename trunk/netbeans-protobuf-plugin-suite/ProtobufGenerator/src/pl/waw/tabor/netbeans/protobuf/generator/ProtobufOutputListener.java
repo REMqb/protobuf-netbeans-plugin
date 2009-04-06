@@ -5,12 +5,9 @@
 
 package pl.waw.tabor.netbeans.protobuf.generator;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.openide.cookies.LineCookie;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
 import org.openide.text.Line;
@@ -51,7 +48,7 @@ class ProtobufOutputListener implements OutputListener{
             String file  =matcher.group(1);
             int lineNumber=Integer.parseInt(matcher.group(2));
             int colNumber=Integer.parseInt(matcher.group(3));
-            DataObject dataObject=findDataObjectForFile(file);
+            DataObject dataObject=ProtobufHelper.findDataObjectForFile(file,nodes);
             if (dataObject!=null)
             {
                 LineCookie lc= (LineCookie) dataObject.getCookie(LineCookie.class);
@@ -69,21 +66,4 @@ class ProtobufOutputListener implements OutputListener{
 //        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    /**
-     * Find a file (one of files the protoc was runned on)
-     *
-     * @param fileName
-     * @return DataObject connected to the fileName or NULL if not found.
-     */
-    public DataObject findDataObjectForFile(String fileName) {
-        for(Node node:nodes)
-        {
-            DataObject d=(DataObject)node.getCookie(DataObject.class);
-            FileObject fileObject=d.getPrimaryFile();
-            File file = FileUtil.toFile(fileObject);
-            if (file.toString().endsWith(fileName))
-                return d;
-        }
-        return null;
-    }
 }
