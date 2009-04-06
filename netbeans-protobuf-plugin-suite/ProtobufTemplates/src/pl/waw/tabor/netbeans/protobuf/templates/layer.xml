@@ -10,7 +10,7 @@
                 <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/pl/waw/tabor/netbeans/protobuf/templates/g.gif"/>
                 <attr name="templateWizardURL" urlvalue="nbresloc:/pl/waw/tabor/netbeans/protobuf/templates/protobuf.template.html"/>
                 <!--Use this line only if your template makes use of the FreeMarker template language:-->
-                <attr name="javax.script.ScriptEngine" stringvalue="freemarker"/>
+                <!--attr name="javax.script.ScriptEngine" stringvalue="freemarker"/-->
             </file>
         </folder>
     </folder>

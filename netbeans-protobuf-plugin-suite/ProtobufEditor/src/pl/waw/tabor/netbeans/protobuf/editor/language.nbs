@@ -30,7 +30,6 @@ TOKEN:start_ncomment:('/*'):<NCOMMENT>
 }
 
 
-
 <STRING_Q1>{
     TOKEN:hexEscape:('\\'['X' 'x']['A'-'F' 'a'-'f' '0'-'9']['A'-'F' 'a'-'f' '0'-'9']?)
     TOKEN:octEscape:('\\''0'?['0'-'7'](['0'-'7']['0'-'7'])?)
