@@ -11,7 +11,7 @@
   * Requires Netbeans 6.7
   * Included libraries to library set (protobuf-java-2.0, protobuf-java-2.1)
   * Fixed issue #6 - we required JDK 1.6. Now we JDK 1.5 compatible too. 
-  * Fixed issue #8 - fixed *.proto files grammer in case of negative integers. 
+  * Fixed issue #8 - fixed `*`.proto files grammer in case of negative integers. 
 
 == Version 1.0.3 ==
 
