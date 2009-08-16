@@ -1,0 +1,21 @@
+#summary Changelog
+
+<wiki:toc max_depth="2" />
+
+= Changelog =
+
+== Version 2.0.0 (not released yet) == 
+
+== Version 1.0.3 ==
+
+== Version 1.0.2 == 
+
+Fixed issue #1 - problems with paths on MS Windows
+
+== Version 1.0.0 ==
+
+* Fixed minor spelling issues
+
+== Version 1.0.0 ==
+
+* Initial version of the plugin
