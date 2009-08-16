@@ -13,5 +13,17 @@
             </file>
         </folder>
     </folder>
+    <folder name="Projects">
+        <folder name="org-netbeans-modules-java-j2seproject">
+            <folder name="Customizer">
+                <folder name="BuildCategory">
+                    <file name="Protobuf.instance">
+                        <attr name="instanceCreate" methodvalue="pl.waw.tabor.netbeans.protobuf.configuration.customizer.ProtobufCustomizer.create"/>
+                        <attr name="position" intvalue="400"/>
+                    </file>
+                </folder>
+            </folder>
+        </folder>
+    </folder>
 
 </filesystem>

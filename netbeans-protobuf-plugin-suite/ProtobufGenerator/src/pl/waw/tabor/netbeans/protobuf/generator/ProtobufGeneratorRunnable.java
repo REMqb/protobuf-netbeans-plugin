@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import org.netbeans.api.java.project.JavaProjectConstants;
 import org.netbeans.api.project.FileOwnerQuery;
@@ -26,6 +25,7 @@ import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
 import org.openide.util.NbBundle;
+import org.openide.util.NbPreferences;
 import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
 import org.openide.windows.OutputWriter;
@@ -38,7 +38,7 @@ import org.openide.windows.OutputWriter;
  * @author <a href="piotr.tabor@gmail.com" (<a href="http://piotr.tabor.waw.pl">http://piotr.tabor.waw.pl</a>)
  */
 public class ProtobufGeneratorRunnable implements Runnable {
-    public final static String PROTOC_PATH_KEY="PROTOC_PATH_KEY";
+    public final static String PROTOC_PATH_KEY="protobuf.executable";
     private Node[] nodes;
     private String additionalArgs;
 
@@ -67,7 +67,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
             try {
                 /*Iterate over selected nodes*/
                 for (int i = 0; i < nodes.length; i++) {
-                    DataObject dataObject = (DataObject) nodes[i].getCookie(DataObject.class);
+                    DataObject dataObject = nodes[i].getCookie(DataObject.class);
                     processDataObject(writer,protocPath,additionalArgs, dataObject);
                 }
             } catch (InterruptedException ex) {
@@ -143,14 +143,15 @@ public class ProtobufGeneratorRunnable implements Runnable {
         String defaultValue = NbBundle.getMessage(
                 ProtobufAction.class,
                 "ProtocolBuffersPanel_ProtocPathDefault");
-        return Preferences.userNodeForPackage(ProtobufGeneratorRunnable.class).get(ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue);
+        return NbPreferences.forModule(ProtobufGeneratorRunnable.class).get(ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue);
+        //return NbPreferences.root().get(ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue);
     }
 
     /** Save the DataObject if it has been modified */
     void forceSave(DataObject dataObject) throws IOException {
         if (dataObject.isModified()) {
             SaveCookie cookie =
-                    (SaveCookie) dataObject.getCookie(SaveCookie.class);
+                    dataObject.getCookie(SaveCookie.class);
             if (cookie != null) {
                 cookie.save();
             }
@@ -179,7 +180,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
                     DataObject dataObject=ProtobufHelper.findDataObjectForFile(matcher.group(1),nodes);
                     if (dataObject!=null)
                     {
-                        LineCookie lc = (LineCookie) dataObject.getCookie(LineCookie.class);
+                        LineCookie lc = dataObject.getCookie(LineCookie.class);
                         ProtobufAnnotation.createAnnotation(lc,
                                 Integer.parseInt(matcher.group(2)) - 1,
                                 Integer.parseInt(matcher.group(3)),

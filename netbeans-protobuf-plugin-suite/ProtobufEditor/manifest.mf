@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
-OpenIDE-Module: pl.waw.tabor.netbeans.protobuf.editor
+OpenIDE-Module: pl.waw.tabor.netbeans.protobuf.editor/2
+OpenIDE-Module-Implementation-Version: 200
 OpenIDE-Module-Layer: pl/waw/tabor/netbeans/protobuf/editor/layer.xml
 OpenIDE-Module-Localizing-Bundle: pl/waw/tabor/netbeans/protobuf/editor/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0.3
+OpenIDE-Module-Specification-Version: 2.0
 
