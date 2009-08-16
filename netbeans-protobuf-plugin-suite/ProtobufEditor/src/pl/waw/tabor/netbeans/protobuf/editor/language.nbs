@@ -11,9 +11,9 @@ TOKEN:ident:(['A'-'Z' 'a'-'z' '_']['A'-'Z' 'a'-'z' '0'-'9' '_']*)
 
 # according to parser.cc, group names must start with a capital letter as a
 # hack for backwards-compatibility
-TOKEN:decInt:(['1'-'9']['0'-'9']*)
-TOKEN:hexInt:('0'['x' 'X'](['A'-'F' 'a'-'f' '0'-'9'])+)
-TOKEN:octInt:('0'['0'-'7']+)
+TOKEN:decInt:('-'?['1'-'9']['0'-'9']*)
+TOKEN:hexInt:('-'?'0'['x' 'X'](['A'-'F' 'a'-'f' '0'-'9'])+)
+TOKEN:octInt:('-'?'0'['0'-'7']+)
 
 # allow_f_after_float_ is disabled by default in tokenizer.cc
 TOKEN:floatLit:(['0'-'9']+('.'['0'-'9']+)?(['E' 'e']['+' '-']?['0'-'9']+)?)
@@ -116,10 +116,11 @@ UserType = ["."] AnyIdent ( "." AnyIdent )*;
 Type = <core_type> | UserType ;
 Constant = AnyIdent | IntLit | <floatLit> | StrLit | <boolLit>;
 
-COLOR:ident: {
+COLOR:ident,camelIdent: {
     foreground_color:"orange";
     font_type:"bold";
 }
+
 
 COLOR:comment,line_comment,start_ncomment,end_ncomment,comment_char:{
     foreground_color:"gray";
