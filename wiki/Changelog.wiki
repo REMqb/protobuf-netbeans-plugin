@@ -6,6 +6,13 @@
 
 == Version 2.0.0 (not released yet) == 
 
+  * Integration with ant build-scripts
+  * Support for generation of code to C++ and Python
+  * Requires Netbeans 6.7
+  * Included libraries to library set (protobuf-java-2.0, protobuf-java-2.1)
+  * Fixed issue #6 - we required JDK 1.6. Now we JDK 1.5 compatible too. 
+  * Fixed issue #8 - fixed *.proto files grammer in case of negative integers. 
+
 == Version 1.0.3 ==
 
 == Version 1.0.2 == 
@@ -14,8 +21,8 @@ Fixed issue #1 - problems with paths on MS Windows
 
 == Version 1.0.0 ==
 
-* Fixed minor spelling issues
+  * Fixed minor spelling issues
 
 == Version 1.0.0 ==
 
-* Initial version of the plugin
+  * Initial version of the plugin
