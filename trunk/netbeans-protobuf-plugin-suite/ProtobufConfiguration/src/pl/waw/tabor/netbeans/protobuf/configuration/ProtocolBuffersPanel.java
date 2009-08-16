@@ -5,9 +5,9 @@
 package pl.waw.tabor.netbeans.protobuf.configuration;
 
 import java.io.File;
-import java.util.prefs.Preferences;
 import javax.swing.JFileChooser;
 import org.openide.util.NbBundle;
+import org.openide.util.NbPreferences;
 import pl.waw.tabor.netbeans.protobuf.generator.ProtobufAction;
 import pl.waw.tabor.netbeans.protobuf.generator.ProtobufGeneratorRunnable;
 
@@ -91,13 +91,15 @@ final class ProtocolBuffersPanel extends javax.swing.JPanel {
         String defaultValue = NbBundle.getMessage(
                 ProtobufAction.class,
                 "ProtocolBuffersPanel_ProtocPathDefault");
-        protocPathTextField.setText(Preferences.userNodeForPackage(
-                ProtobufGeneratorRunnable.class).get(
-                ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue));
+        protocPathTextField.setText(
+                NbPreferences.forModule(ProtobufGeneratorRunnable.class)
+                //NbPreferences.root()
+                .get(ProtobufGeneratorRunnable.PROTOC_PATH_KEY, defaultValue));
     }
     
     void store() {
-        Preferences.userNodeForPackage(ProtobufGeneratorRunnable.class).
+        NbPreferences.forModule(ProtobufGeneratorRunnable.class).
+        //NbPreferences.root().
         put(ProtobufGeneratorRunnable.PROTOC_PATH_KEY,  protocPathTextField.getText());
     }
 
