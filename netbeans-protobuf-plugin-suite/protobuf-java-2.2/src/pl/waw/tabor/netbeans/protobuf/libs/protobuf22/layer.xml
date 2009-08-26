@@ -47,7 +47,7 @@ made subject to such option by the copyright holder.
 <filesystem>
   <folder name="org-netbeans-api-project-libraries">
     <folder name="Libraries">
-      <file name="protobuf21.xml" url="protobuf21.xml"/>
+      <file name="protobuf22.xml" url="protobuf22.xml"/>
     </folder>
   </folder>
 </filesystem>
