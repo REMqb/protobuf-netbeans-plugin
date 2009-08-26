@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
 <filesystem>
-        <folder name="OptionsDialog">
+    <folder name="OptionsDialog">
         <folder name="Advanced">
             <file name="pl-waw-tabor-netbeans-protobuf-configuration-ProtocolBuffersAdvancedOption.instance">
                 <attr name="controller" newvalue="pl.waw.tabor.netbeans.protobuf.configuration.ProtocolBuffersOptionsPanelController"/>
@@ -13,17 +13,4 @@
             </file>
         </folder>
     </folder>
-    <folder name="Projects">
-        <folder name="org-netbeans-modules-java-j2seproject">
-            <folder name="Customizer">
-                <folder name="BuildCategory">
-                    <file name="Protobuf.instance">
-                        <attr name="instanceCreate" methodvalue="pl.waw.tabor.netbeans.protobuf.configuration.customizer.ProtobufCustomizer.create"/>
-                        <attr name="position" intvalue="400"/>
-                    </file>
-                </folder>
-            </folder>
-        </folder>
-    </folder>
-
 </filesystem>
