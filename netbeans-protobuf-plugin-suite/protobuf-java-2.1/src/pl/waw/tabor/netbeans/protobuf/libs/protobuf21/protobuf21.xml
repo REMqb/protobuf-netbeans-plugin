@@ -50,7 +50,7 @@ made subject to such option by the copyright holder.
     <volume>
         <type>classpath</type>
         <resource>jar:nbinst:///modules/ext/protobuf-java-2.1.0.jar!/</resource>
-    </volume>
+    </volume>http://google-maven-repository.googlecode.com/svn/repository/com/google/protobuf/protobuf-java/2.1.0/protobuf-java-2.1.0.pom
     <volume>
         <type>maven-pom</type>
         <resource>http://google-maven-repository.googlecode.com/svn/repository/com/google/protobuf/protobuf-java/2.1.0/protobuf-java-2.1.0.pom</resource>
