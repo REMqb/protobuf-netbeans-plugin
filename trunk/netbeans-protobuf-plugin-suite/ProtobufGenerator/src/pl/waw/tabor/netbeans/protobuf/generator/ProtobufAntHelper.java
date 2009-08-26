@@ -14,7 +14,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.transform.Source;
-import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.java.classpath.ClassPath;
@@ -23,7 +22,6 @@ import org.netbeans.api.java.project.classpath.ProjectClassPathModifier;
 import org.netbeans.api.progress.ProgressHandle;
 import org.netbeans.api.progress.ProgressHandleFactory;
 import org.netbeans.api.project.Project;
-import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.ProjectUtils;
 import org.netbeans.api.project.SourceGroup;
 import org.netbeans.api.project.Sources;
@@ -145,11 +143,32 @@ public class ProtobufAntHelper {
     return null;
   }
 
+  private static String getProperty(Project prj/*, String filePath*/,
+            String name) {
+        AntProjectHelper aph = getAntProjectHelper(prj);
+        return aph.getStandardPropertyEvaluator().getProperty(name);
+        //aph.g
+//        EditableProperties ep = aph.getProperties(filePath);
+//        String str = null;
+//        String value = ep.getProperty(name);
+//        if (value != null) {
+//            PropertyEvaluator pe = aph.getStandardPropertyEvaluator();
+//            str = pe.evaluate(value);
+//        }
+//        return "abc";
+    }
+
+  public static String getJavaGenDestinationDirectory(Project prj)
+  {
+      return getProperty(prj,"build.generated.sources.dir")+"/protobuf-java";
+  }
+
   private static void executeAntTarget(final Project project,
           final boolean addLibs,
           final String antTarget) {
     final ProgressHandle progressHandle = ProgressHandleFactory.createHandle(NbBundle.getMessage(ProtobufAntHelper.class, "MSG_PROTOBUF_PROGRESS")); //NOI18N;
     progressHandle.start();
+
 
     Runnable run = new Runnable() {
 
@@ -238,7 +257,10 @@ public class ProtobufAntHelper {
     }
 
 
-  public static void addExtender(Project project) throws IOException {  
+  public static void addExtender(Project project) throws IOException {
+
+    System.out.println("Destination generation directory: "+getJavaGenDestinationDirectory(project));
+
     AntBuildExtender ext = project.getLookup().lookup(AntBuildExtender.class);
 
     removeExtender(project);
