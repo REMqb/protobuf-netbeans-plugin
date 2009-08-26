@@ -4,9 +4,9 @@
 
 = Changelog =
 
-== Version 2.0.0 (not released yet) == 
+== Version 2.0.0 (released 2009-08-26) == 
 
-  * Integration with ant build-scripts
+  * Integration with ant build-scripts (extension support)
   * Support for generation of code to C++ and Python
   * Requires Netbeans 6.7
   * Included libraries to library set (protobuf-java-2.0, protobuf-java-2.1)
