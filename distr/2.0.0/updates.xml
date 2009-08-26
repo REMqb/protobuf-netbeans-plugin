@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE module_updates PUBLIC "-//NetBeans//DTD Autoupdate Catalog 2.6//EN" "http://www.netbeans.org/dtds/autoupdate-catalog-2_6.dtd">
+<module_updates timestamp="10/22/18/26/08/2009">
+
+
+<module autoload="true" codenamebase="pl.waw.tabor.netbeans.protobuf.libs.protobuf20" distribution="pl-waw-tabor-netbeans-protobuf-libs-protobuf20.nbm" downloadsize="262524" homepage="" license="9D38AC03" moduleauthor="" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="false" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.libs.protobuf20/20" OpenIDE-Module-Implementation-Version="203" OpenIDE-Module-Java-Dependencies="Java &gt; 1.4" OpenIDE-Module-Name="protobuf-java-2.0" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Specification-Version="2.0"/>
+    
+</module>
+
+<module autoload="true" codenamebase="pl.waw.tabor.netbeans.protobuf.libs.protobuf21" distribution="pl-waw-tabor-netbeans-protobuf-libs-protobuf21.nbm" downloadsize="276266" homepage="" license="9D38AC03" moduleauthor="" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="false" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.libs.protobuf21/21" OpenIDE-Module-Implementation-Version="210" OpenIDE-Module-Java-Dependencies="Java &gt; 1.4" OpenIDE-Module-Name="protobuf-java-2.1" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Specification-Version="2.1"/>
+    
+</module>
+
+<module autoload="true" codenamebase="pl.waw.tabor.netbeans.protobuf.libs.protobuf22" distribution="pl-waw-tabor-netbeans-protobuf-libs-protobuf22.nbm" downloadsize="1056213" homepage="" license="9D38AC03" moduleauthor="" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="false" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.libs.protobuf22/22" OpenIDE-Module-Implementation-Version="220" OpenIDE-Module-Java-Dependencies="Java &gt; 1.4" OpenIDE-Module-Name="protobuf-java-2.2" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Specification-Version="2.2"/>
+    
+</module>
+
+<module_group name="Protobuf">
+
+<module codenamebase="pl.waw.tabor.netbeans.protobuf.configuration" distribution="pl-waw-tabor-netbeans-protobuf-configuration.nbm" downloadsize="9409" homepage="http://protobuf-netbeans-plugin.googlecode.com" license="B84C6956" moduleauthor="Piotr Tabor" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="true" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.configuration/2" OpenIDE-Module-Display-Category="Protobuf" OpenIDE-Module-Implementation-Version="200" OpenIDE-Module-Java-Dependencies="Java &gt; 1.5" OpenIDE-Module-Long-Description="Adds window to Tools -&gt; Options -&gt; Miscellaneous -&gt; Protocol Buffers that allows&#10;configuration of the protoc exacutable path." OpenIDE-Module-Module-Dependencies="org.jdesktop.layout/1 &gt; 1.6.1, org.netbeans.modules.editor/3 &gt; 1.41.1.3.8.2, org.netbeans.modules.options.api/1 &gt; 1.10.1, org.netbeans.modules.projectapi/1 &gt; 1.24.2, org.netbeans.modules.projectuiapi/1 &gt; 1.35.1.6, org.openide.awt &gt; 7.3.1.1, org.openide.util &gt; 7.18.1.1, pl.waw.tabor.netbeans.protobuf.generator/2 &gt; 2.0" OpenIDE-Module-Name="ProtobufConfiguration" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="Options windows for protocol buffers" OpenIDE-Module-Specification-Version="2.0"/>
+    
+</module>
+
+<module codenamebase="pl.waw.tabor.netbeans.protobuf.editor" distribution="pl-waw-tabor-netbeans-protobuf-editor.nbm" downloadsize="14771" homepage="http://protobuf-netbeans-plugin.googlecode.com" license="B84C6956" moduleauthor="Piotr Tabor" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="true" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.editor/2" OpenIDE-Module-Display-Category="Protobuf" OpenIDE-Module-Implementation-Version="200" OpenIDE-Module-Java-Dependencies="Java &gt; 1.5" OpenIDE-Module-Long-Description="*.proto files support:&#10;&#9;- syntax coloring&#10;&#9;- code completion)" OpenIDE-Module-Module-Dependencies="org.jdesktop.layout/1 &gt; 1.6.1, org.netbeans.modules.editor/3 &gt; 1.41.1.3.8.2, org.netbeans.modules.editor.completion/1 &gt; 1.13.1, org.netbeans.modules.editor.lib/1 &gt; 1.29.1.8.2, org.netbeans.modules.languages/0-1 &gt; 1.90.1.1, org.netbeans.modules.options.api/1 &gt; 1.10.1, org.openide.awt &gt; 7.3.1.1, org.openide.nodes &gt; 7.7.1.1, org.openide.text &gt; 6.21.1, org.openide.util &gt; 7.18.1.1, org.openide.windows &gt; 6.24.1" OpenIDE-Module-Name="ProtobufEditor" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="*.proto files support (syntax coloring, code completion)" OpenIDE-Module-Specification-Version="2.0"/>
+    
+</module>
+
+<module codenamebase="pl.waw.tabor.netbeans.protobuf.generator" distribution="pl-waw-tabor-netbeans-protobuf-generator.nbm" downloadsize="32744" homepage="http://protobuf-netbeans-plugin.googlecode.com" license="B84C6956" moduleauthor="Piotr Tabor" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="true" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.generator/2" OpenIDE-Module-Display-Category="Protobuf" OpenIDE-Module-Implementation-Version="200" OpenIDE-Module-Java-Dependencies="Java &gt; 1.5" OpenIDE-Module-Long-Description="Allows to run protoc compiler on currently open or selected *.proto file." OpenIDE-Module-Module-Dependencies="org.apache.tools.ant.module/3 &gt; 3.35.1.2, org.netbeans.api.java.classpath/1 &gt; 1.19.1, org.netbeans.api.progress/1 &gt; 1.13.1.1, org.netbeans.libs.springframework &gt; 1.2.1, org.netbeans.modules.java.project/1 &gt; 1.22.1, org.netbeans.modules.project.ant/1 &gt; 1.31.2, org.netbeans.modules.project.libraries/1 &gt; 1.20.1, org.netbeans.modules.projectapi/1 &gt; 1.19.1, org.netbeans.modules.projectuiapi/1 &gt; 1.35.1.6, org.openide.dialogs &gt; 7.10.1, org.openide.execution &gt; 1.12.1, org.openide.filesystems &gt; 7.13.1.1.1, org.openide.io &gt; 1.13.1, org.openide.loaders &gt; 7.2.1, org.openide.nodes &gt; 7.7.1.1, org.openide.text &gt; 6.21.1, org.openide.util &gt; 7.18.1.1, pl.waw.tabor.netbeans.protobuf.libs.protobuf20/20 &gt; 2.0, pl.waw.tabor.netbeans.protobuf.libs.protobuf21/21 &gt; 2.1, pl.waw.tabor.netbeans.protobuf.libs.protobuf22/22 &gt; 2.2" OpenIDE-Module-Name="ProtobufGenerator" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="Running protoc compiler from the IDE" OpenIDE-Module-Specification-Version="2.0"/>
+    
+</module>
+
+<module codenamebase="pl.waw.tabor.netbeans.protobuf.templates" distribution="pl-waw-tabor-netbeans-protobuf-templates.nbm" downloadsize="7218" homepage="http://protobuf-netbeans-plugin.googlecode.com" license="B84C6956" moduleauthor="Piotr Tabor" needsrestart="false" releasedate="2009/08/26">
+    <manifest AutoUpdate-Show-In-Client="true" OpenIDE-Module="pl.waw.tabor.netbeans.protobuf.templates/2" OpenIDE-Module-Display-Category="Protobuf" OpenIDE-Module-Implementation-Version="200" OpenIDE-Module-Java-Dependencies="Java &gt; 1.5" OpenIDE-Module-Long-Description="New File -&gt; Other -&gt; Protobuf empty file" OpenIDE-Module-Name="ProtobufTemplates" OpenIDE-Module-Requires="org.openide.modules.ModuleFormat1" OpenIDE-Module-Short-Description="Templete for a *.proto file in &quot;New File&quot; menu" OpenIDE-Module-Specification-Version="2.0"/>
+    
+</module>
+
+</module_group>
+
+<license name="B84C6956" url="licenses/B84C6956.license"/>
+<license name="9D38AC03" url="licenses/9D38AC03.license"/>
+</module_updates>
+
