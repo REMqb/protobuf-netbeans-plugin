@@ -4,6 +4,7 @@
 ***         EDIT ../build.xml INSTEAD         ***
 -->
 <project name="netbeans-protobuf-plugin-suite-impl" basedir=".." xmlns:sproject="http://www.netbeans.org/ns/nb-module-suite-project/1">
+  
     <property file="nbproject/private/platform-private.properties"/>
     <property file="nbproject/platform.properties"/>
     <macrodef name="property" uri="http://www.netbeans.org/ns/nb-module-suite-project/1">
@@ -23,5 +24,9 @@
             </not>
         </condition>
     </fail>
+    <echo  message="HERNESS.DIR:${harness.dir}"/>
+    <property name="run.args" value="-J-XX:MaxPermSize=256m"/>
+    <echo  message="args: | ${run.args.common} | ${run.args.prepared}| ${run.args} | ${run.args.extra}"/>
     <import file="${harness.dir}/suite.xml"/>
+
 </project>

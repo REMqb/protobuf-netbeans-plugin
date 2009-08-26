@@ -10,6 +10,8 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
+import javax.xml.bind.JAXBContext;
+import pl.waw.tabor.netbeans.protobuf.generator.jaxb.ProtobufConfig;
 
 /**
  *
@@ -17,7 +19,12 @@ import org.openide.nodes.Node;
  */
 public class ProtobufHelper {
 
+    public void jaxbTest(){
+      
+    }
+
     /**
+     *
      * Find a file (one of files the protoc was runned on)
      *
      * @param fileName
@@ -35,3 +42,4 @@ public class ProtobufHelper {
         return null;
     }
 }
+

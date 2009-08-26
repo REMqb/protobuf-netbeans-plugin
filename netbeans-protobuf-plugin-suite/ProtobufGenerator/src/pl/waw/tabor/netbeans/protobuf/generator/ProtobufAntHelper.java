@@ -5,11 +5,17 @@
 package pl.waw.tabor.netbeans.protobuf.generator;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Method;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.Source;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
 import org.apache.tools.ant.module.api.support.ActionUtils;
 import org.netbeans.api.java.classpath.ClassPath;
 import org.netbeans.api.java.project.JavaProjectConstants;
@@ -43,23 +49,25 @@ public class ProtobufAntHelper {
 
   private static final String NBPROJECT_DIR = "nbproject"; //NOI18N
   private static final String PROTOBUF_BUILD_FILE_NAME = "protobuf-build.xml"; //NOI18N
+  private static final String PROTOBUF_CONFIG_FILE_NAME = "protobuf-build.cfg.xml"; //NOI18N
   private static final String PROTOBUF_CONTEXT_CLASS_RES_PATH = "com/google/protobuf/Message.class"; //NOI18N
   private static final String PROTOBUF_LIB_NAME = "protobuf"; //NOI18N
   private static final String PROTOBUF_ANT_XTN_NAME = "protobuf"; //NOI18N
 
-  public void refreshProtobufBuildFile() {
-  }
 
+  
   public static void refreshBuildScript(Project prj) {
     try {
-      InputStream is = ProtobufAntHelper.class.getResourceAsStream(PROTOBUF_BUILD_FILE_NAME);
-      OutputStream os = new FileOutputStream(getXMLBindingConfigFile(prj));
-      FileUtil.copy(is, os);
-      is.close();
-      os.close();
+      refreshBuildScript(new StreamSource(getProtobufConfigFile(prj)), new StreamResult(getProtobufBuildFile(prj)));
+    } catch (TransformerConfigurationException ex) {
+      Exceptions.printStackTrace(ex);
+    } catch (TransformerException ex) {
+      Exceptions.printStackTrace(ex);
+    }
+  }
 
-//            Source xmlSource = new StreamSource(getXMLBindingConfigFile(prj));
-//            Source xslSource = null;
+    public static void refreshBuildScript(/*Project prj,*/StreamSource xmlSource, StreamResult result) throws TransformerConfigurationException, TransformerException {
+              Source xslSource = new StreamSource(ProtobufAntHelper.class.getResourceAsStream("resources/protobuf-build.xsl"));
 //            int projType = getProjectType(prj);
 //            if (projType == PROJECT_TYPE_EJB) {
 //                xslSource = new StreamSource(
@@ -74,24 +82,22 @@ public class ProtobufAntHelper {
 //                        ProjectHelper.class.getClassLoader().getResourceAsStream(
 //                        XSL_RESOURCE));
 //            }
-//
-//            Result result = new StreamResult(getXMLBindingBuildFile(prj));
-//            TransformerFactory fact = TransformerFactory.newInstance();
-//            try {
-//                fact.setAttribute("indent-number", 4); //NOI18N
-//            } catch (Exception ex) {
-//                //Ignore Xalan does not recognize "indent-number"
-//            }
-//            Transformer xformer = fact.newTransformer(xslSource);
-//            xformer.setOutputProperty(OutputKeys.INDENT, "yes"); //NOI18N
-//            xformer.setOutputProperty(OutputKeys.METHOD, "xml"); //NOI18N
-//            xformer.transform(xmlSource, result);
-    } catch (Exception ex) {
-      Exceptions.printStackTrace(ex);
-    }
+
+//            Result result = new StreamResult(getProtobufBuildFile(prj));
+            TransformerFactory fact = TransformerFactory.newInstance();
+            try {
+                fact.setAttribute("indent-number", 4); //NOI18N
+            } catch (Exception ex) {
+                //Ignore Xalan does not recognize "indent-number"
+            }
+            Transformer xformer = fact.newTransformer(xslSource);
+            xformer.setOutputProperty(OutputKeys.INDENT, "yes"); //NOI18N
+            xformer.setOutputProperty(OutputKeys.METHOD, "xml"); //NOI18N
+            xformer.transform(xmlSource, result);
   }
 
-  private static File getXMLBindingConfigFile(Project prj) {
+
+  private static File getProtobufBuildFile(Project prj) {
     File configFile = null;
     if (prj != null) {
       FileObject fo = prj.getProjectDirectory();
@@ -99,6 +105,21 @@ public class ProtobufAntHelper {
 
       try {
         configFile = new File(projDir, NBPROJECT_DIR + File.separator + PROTOBUF_BUILD_FILE_NAME);
+      } catch (Exception ex) {
+        Exceptions.printStackTrace(ex);
+      }
+    }
+    return configFile;
+  }
+
+  public static File getProtobufConfigFile(Project prj) {
+    File configFile = null;
+    if (prj != null) {
+      FileObject fo = prj.getProjectDirectory();
+      File projDir = FileUtil.toFile(fo);
+
+      try {
+        configFile = new File(projDir, NBPROJECT_DIR + File.separator + PROTOBUF_CONFIG_FILE_NAME);
       } catch (Exception ex) {
         Exceptions.printStackTrace(ex);
       }
@@ -132,6 +153,7 @@ public class ProtobufAntHelper {
 
     Runnable run = new Runnable() {
 
+      @Override
       public void run() {
         try {
           if (addLibs) {
@@ -180,7 +202,6 @@ public class ProtobufAntHelper {
 
     FileObject jaxbClass = classPath.findResource(PROTOBUF_CONTEXT_CLASS_RES_PATH);
     if (jaxbClass == null) {
-      // Add JAXB jars if not in the classpath
       Library jaxbLib = LibraryManager.getDefault().getLibrary(PROTOBUF_LIB_NAME);
       Sources srcs = ProjectUtils.getSources(prj);
       if (srcs != null) {
@@ -201,10 +222,13 @@ public class ProtobufAntHelper {
   public static FileObject getFOForBindingBuildFile(Project prj) {
         FileObject buildFileFo = null;
         if (prj != null) {
+            System.out.println("prj!=null");
             FileObject fo = prj.getProjectDirectory();
             try {
                 fo.getFileObject(NBPROJECT_DIR + File.separator).refresh();
                 buildFileFo = fo.getFileObject(NBPROJECT_DIR + File.separator + PROTOBUF_BUILD_FILE_NAME);
+                System.out.println("NBPROJECT_DIR + File.separator + PROTOBUF_BUILD_FILE_NAME:"+NBPROJECT_DIR + File.separator + PROTOBUF_BUILD_FILE_NAME);
+                System.out.println("buildFileFo:"+buildFileFo);
             } catch (Exception ex) {
                 Exceptions.printStackTrace(ex);
             }
@@ -214,13 +238,29 @@ public class ProtobufAntHelper {
     }
 
 
-  public void addExtender(Project project) throws IOException {
+  public static void addExtender(Project project) throws IOException {  
     AntBuildExtender ext = project.getLookup().lookup(AntBuildExtender.class);
+
+    removeExtender(project);
+
     if (ext != null && ext.getExtension(PROTOBUF_ANT_XTN_NAME) == null) {
+      //System.out.println("Registering extension");
       FileObject jaxbBuildXml = getFOForBindingBuildFile(project);
       AntBuildExtender.Extension jaxbBuild = ext.addExtension(PROTOBUF_ANT_XTN_NAME, jaxbBuildXml);
-      jaxbBuild.addDependency("protobuf-code-generation","-pre-pre-compile");
-      ProjectManager.getDefault().saveProject(project);
+      jaxbBuild.addDependency("-pre-pre-compile","protobuf-code-generation");      
     }
+  }
+
+  public static void removeExtender(Project project){
+    AntBuildExtender ext = project.getLookup().lookup(AntBuildExtender.class);
+
+    if (ext != null && ext.getExtension(PROTOBUF_ANT_XTN_NAME) != null) {
+      System.out.println("Removing extension");
+      ext.removeExtension(PROTOBUF_ANT_XTN_NAME);
+    }
+  }
+
+  public static void proposeRegistrationOfProtobufLibrary() {
+    //throw new UnsupportedOperationException("Not yet implemented");
   }
 }

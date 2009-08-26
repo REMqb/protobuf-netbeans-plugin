@@ -67,6 +67,15 @@
                         <specification-version>7.18.1.1</specification-version>
                     </run-dependency>
                 </dependency>
+                <dependency>
+                    <code-name-base>pl.waw.tabor.netbeans.protobuf.generator</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>2</release-version>
+                        <specification-version>2.0</specification-version>
+                    </run-dependency>
+                </dependency>
             </module-dependencies>
             <public-packages>
                 <package>pl.waw.tabor.netbeans.protobuf.configuration</package>

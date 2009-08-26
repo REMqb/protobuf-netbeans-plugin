@@ -38,7 +38,7 @@
                 <pathelement location="${src.dir}"/>
                 <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
             </classpath>
-            <arg value="-xmlschema"/>
+            <arg value="-xmlschema -source 1.0"/>
             <schema file="../src/pl/waw/tabor/netbeans/protobuf/generator/resources/ProtobufConfig.xsd"/>
             <depends file="../src/pl/waw/tabor/netbeans/protobuf/generator/resources/ProtobufConfig.xsd"/>
             <produces dir="../build/generated/jaxbCache/my_first_binding"/>
