@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<protobuf-config
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xmlns='http://code.google.com/p/protobuf-netbeans-plugin/schema/ProtobufConfig'
+   xsi:schemaLocation='http://code.google.com/p/protobuf-netbeans-plugin/schema/ProtobufConfig file:/home/ptab/NetBeansProjects/JavaApplication5/nbproject/ProtobufConfig.xsd'>
+  <generator type="java" on="true"/>
+</protobuf-config>

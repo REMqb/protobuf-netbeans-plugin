@@ -18,7 +18,7 @@
             </folder>
         </folder>
         <folder name="AnnotationTypes">
-            <file name="pl-waw-tabor-netbeans-protobuf-generator-ProtobufErrorAnnotation.xml" url="ProtobufErrorAnnotation.xml"/>
+            <file name="pl-waw-tabor-netbeans-protobuf-generator-resources-ProtobufErrorAnnotation.xml" url="ProtobufErrorAnnotation.xml"/>
         </folder>
     </folder>
     <folder name="Loaders">

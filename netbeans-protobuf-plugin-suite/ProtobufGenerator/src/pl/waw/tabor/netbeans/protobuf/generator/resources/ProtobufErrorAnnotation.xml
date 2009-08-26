@@ -3,11 +3,11 @@
 "-//NetBeans//DTD annotation type 1.0//EN"
 "http://www.netbeans.org/dtds/annotation-type-1_0.dtd">
 <type
-    name="pl-waw-tabor-netbeans-protobuf-generator-tidyerrorannotation"
+    name="pl-waw-tabor-netbeans-protobuf-generator-resources-tidyerrorannotation"
     description_key="ProtobufErrorLabel"
     localizing_bundle="pl.waw.tabor.netbeans.protobuf.generator.Bundle"
     visible="true"
-    glyph="nbresloc:/pl/waw/tabor/netbeans/protobuf/generator/error.png"
+    glyph="nbresloc:/pl/waw/tabor/netbeans/protobuf/generator/resources/error.png"
     highlight="#FF5555"
     type="line"
     severity="error"/>

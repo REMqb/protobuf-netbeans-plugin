@@ -45,7 +45,7 @@ public final class ProtobufAction extends CookieAction {
 
     @Override
     protected String iconResource() {
-        return "pl/waw/tabor/netbeans/protobuf/generator/g.gif";
+        return "pl/waw/tabor/netbeans/protobuf/generator/resources/g.gif";
     }
 
     public HelpCtx getHelpCtx() {
