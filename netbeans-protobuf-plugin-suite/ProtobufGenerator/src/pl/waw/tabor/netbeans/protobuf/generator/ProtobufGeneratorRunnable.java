@@ -103,7 +103,9 @@ public class ProtobufGeneratorRunnable implements Runnable {
         FileObject fileObject = dataObject.getPrimaryFile();
         File file = FileUtil.toFile(fileObject);
 
-        final FileObject java_out=getJavaSourceDirForNode(dataObject, writer);
+
+        final FileObject java_out=getJavaDestinationDirectory(dataObject,writer);                
+
         if (java_out!=null)
         { /*We found destination directory*/
 
@@ -127,6 +129,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
 //                weri
 //            }
             /*Reload content of the destination directory*/
+            getProject(fileObject).getProjectDirectory().refresh();
             java_out.refresh();
         }else{
             writer.println("No Java sorce directory (destination directory)");
@@ -244,4 +247,17 @@ public class ProtobufGeneratorRunnable implements Runnable {
         Project p=getProject( fileObject);
         return FileUtil.toFile(p.getProjectDirectory()).getAbsolutePath();
     }
+
+  private FileObject getJavaDestinationDirectory(DataObject dataObject, OutputWriter writer) {
+    Project p = getProject(dataObject.getPrimaryFile());
+    String s=ProtobufAntHelper.getJavaGenDestinationDirectory(p);
+    if (s!=null){
+      File f=new File(FileUtil.toFile(p.getProjectDirectory()),s);
+      f.mkdirs();
+      FileObject res=FileUtil.toFileObject(FileUtil.normalizeFile(f));
+      return res;
+    }else{
+      return getJavaSourceDirForNode(dataObject, writer);
+    }
+  }
 }
