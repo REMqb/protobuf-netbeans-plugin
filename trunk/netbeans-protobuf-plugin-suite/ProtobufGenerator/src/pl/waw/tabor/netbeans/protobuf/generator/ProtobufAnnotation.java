@@ -32,7 +32,7 @@ class ProtobufAnnotation extends Annotation {
      * We support only "error" annotations. 
      */
     private static final String[] annoType = {
-        "pl-waw-tabor-netbeans-protobuf-generator-tidyerrorannotation"
+        "pl-waw-tabor-netbeans-protobuf-generator-resources-tidyerrorannotation"
     };
 
     /*Description and position of the problem*/
