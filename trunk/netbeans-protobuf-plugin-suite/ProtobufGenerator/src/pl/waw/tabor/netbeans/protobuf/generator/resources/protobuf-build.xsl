@@ -48,7 +48,7 @@
         </xsl:element>
         <pathconvert property="protofiles" pathsep=" " refid="proto.classpath" />
 
-        <xsl:for-each select="/s:protobuf-config/s:generator[@on]">
+        <xsl:for-each select="/s:protobuf-config/s:generator[@on='true']">
           <xsl:element name="mkdir">
             <xsl:attribute name="dir">${build.generated.sources.dir.protobuf.<xsl:value-of select='@type'/>}</xsl:attribute>
           </xsl:element>
@@ -64,7 +64,7 @@
           </xsl:element>
 
             
-          <xsl:for-each select="/s:protobuf-config/s:generator[@on]">
+          <xsl:for-each select="/s:protobuf-config/s:generator[@on='true']">
             <xsl:element name="arg"><xsl:attribute name="line">--<xsl:value-of select="@type"/>_out=${build.generated.sources.dir.protobuf.<xsl:value-of select="@type"/>}</xsl:attribute></xsl:element>
           </xsl:for-each>
 
