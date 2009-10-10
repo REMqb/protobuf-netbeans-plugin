@@ -285,6 +285,6 @@ public class ProtobufGeneratorRunnable implements Runnable {
   }
 
   private boolean isCppProject(Project p) {
-    return (p.getClass().toString().toUpperCase().contains("CPP"));
+    return (p.getClass().toString().toUpperCase().contains("MAKEPROJECT"));
   }
 }
