@@ -127,17 +127,16 @@ public class ProtobufAntHelper {
 
   public static AntProjectHelper getAntProjectHelper(Project project) {
     try {
-      Method getAntProjectHelperMethod = project.getClass().getMethod(
-              "getAntProjectHelper"); //NOI18N
+      Method getAntProjectHelperMethod = project.getClass().getMethod("getAntProjectHelper"); //NOI18N
       if (getAntProjectHelperMethod != null) {
         AntProjectHelper helper = (AntProjectHelper) getAntProjectHelperMethod.invoke(project);
 
         return helper;
       }
     } catch (NoSuchMethodException nme) {
-      Exceptions.printStackTrace(nme);
+      //Exceptions.printStackTrace(nme);
     } catch (Exception ex) {
-      Exceptions.printStackTrace(ex);
+      //Exceptions.printStackTrace(ex);
     }
 
     return null;
@@ -146,7 +145,11 @@ public class ProtobufAntHelper {
   private static String getProperty(Project prj/*, String filePath*/,
             String name) {
         AntProjectHelper aph = getAntProjectHelper(prj);
-        return aph.getStandardPropertyEvaluator().getProperty(name);
+        if (aph!=null){
+          return aph.getStandardPropertyEvaluator().getProperty(name);
+        }else{
+          return null;
+        }
         //aph.g
 //        EditableProperties ep = aph.getProperties(filePath);
 //        String str = null;
@@ -160,49 +163,50 @@ public class ProtobufAntHelper {
 
   public static String getJavaGenDestinationDirectory(Project prj)
   {
-      return getProperty(prj,"build.generated.sources.dir")+"/protobuf-java";
+      String genSrcDir=getProperty(prj,"build.generated.sources.dir");
+      return (genSrcDir!=null)?(genSrcDir+"/protobuf-java"):null;
   }
 
-  private static void executeAntTarget(final Project project,
-          final boolean addLibs,
-          final String antTarget) {
-    final ProgressHandle progressHandle = ProgressHandleFactory.createHandle(NbBundle.getMessage(ProtobufAntHelper.class, "MSG_PROTOBUF_PROGRESS")); //NOI18N;
-    progressHandle.start();
-
-
-    Runnable run = new Runnable() {
-
-      @Override
-      public void run() {
-        try {
-          if (addLibs) {
-            addProtobufLibrary(project);
-          }
-
-          FileObject buildXml = getFOForProjectBuildFile(project);
-          String[] args = new String[]{antTarget};
-
-          if (buildXml != null) {
-            ExecutorTask task = ActionUtils.runTarget(buildXml, args, null);
-            task.waitFinished();
-            if (task.result() != 0) {
-              String mes = NbBundle.getMessage(ProtobufAntHelper.class, "MSG_ERROR_COMPILING"); //NOI18N
-              NotifyDescriptor desc = new NotifyDescriptor.Message(mes, NotifyDescriptor.Message.ERROR_MESSAGE);
-              DialogDisplayer.getDefault().notify(desc);
-            }
-          }
-        } catch (IOException ioe) {
-          Exceptions.printStackTrace(ioe);
-        } catch (Exception e) {
-          Exceptions.printStackTrace(e);
-        } finally {
-          progressHandle.finish();
-        }
-      }
-    };
-
-    RequestProcessor.getDefault().post(run);
-  }
+//  private static void executeAntTarget(final Project project,
+//          final boolean addLibs,
+//          final String antTarget) {
+//    final ProgressHandle progressHandle = ProgressHandleFactory.createHandle(NbBundle.getMessage(ProtobufAntHelper.class, "MSG_PROTOBUF_PROGRESS")); //NOI18N;
+//    progressHandle.start();
+//
+//
+//    Runnable run = new Runnable() {
+//
+//      @Override
+//      public void run() {
+//        try {
+//          if (addLibs) {
+//            addProtobufLibrary(project);
+//          }
+//
+//          FileObject buildXml = getFOForProjectBuildFile(project);
+//          String[] args = new String[]{antTarget};
+//
+//          if (buildXml != null) {
+//            ExecutorTask task = ActionUtils.runTarget(buildXml, args, null);
+//            task.waitFinished();
+//            if (task.result() != 0) {
+//              String mes = NbBundle.getMessage(ProtobufAntHelper.class, "MSG_ERROR_COMPILING"); //NOI18N
+//              NotifyDescriptor desc = new NotifyDescriptor.Message(mes, NotifyDescriptor.Message.ERROR_MESSAGE);
+//              DialogDisplayer.getDefault().notify(desc);
+//            }
+//          }
+//        } catch (IOException ioe) {
+//          Exceptions.printStackTrace(ioe);
+//        } catch (Exception e) {
+//          Exceptions.printStackTrace(e);
+//        } finally {
+//          progressHandle.finish();
+//        }
+//      }
+//    };
+//
+//    RequestProcessor.getDefault().post(run);
+//  }
 
   public static FileObject getFOForProjectBuildFile(Project prj) {
     FileObject buildFileFo = null;
