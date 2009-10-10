@@ -281,10 +281,10 @@ public class ProtobufGeneratorRunnable implements Runnable {
   }
 
   private boolean isPythonProject(Project p) {
-    return (p.getClass().toString().toUpperCase().contains("JAVA"));
+    return (p.getClass().toString().toUpperCase().contains("PYTHON"));
   }
 
   private boolean isCppProject(Project p) {
-    return (p.getClass().toString().toUpperCase().contains("PYTHON"));
+    return (p.getClass().toString().toUpperCase().contains("CPP"));
   }
 }
