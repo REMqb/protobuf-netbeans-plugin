@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 OpenIDE-Module: pl.waw.tabor.netbeans.protobuf.templates/2
-OpenIDE-Module-Implementation-Version: 200
+OpenIDE-Module-Implementation-Version: 201
 OpenIDE-Module-Layer: pl/waw/tabor/netbeans/protobuf/templates/layer.xml
 OpenIDE-Module-Localizing-Bundle: pl/waw/tabor/netbeans/protobuf/templates/Bundle.properties
-OpenIDE-Module-Specification-Version: 2.0
+OpenIDE-Module-Specification-Version: 2.0.1
 

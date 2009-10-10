@@ -109,11 +109,23 @@ public class ProtobufGeneratorRunnable implements Runnable {
         if (java_out!=null)
         { /*We found destination directory*/
 
-            /*Calculating args and running the process*/
-            String args=protocParams +"--proto_path=\""+getProjectPath(fileObject)+"\""+" --java_out \""+FileUtil.toFile(java_out).toString()+"\" \"" + file.getAbsolutePath() +"\"";
-            writer.println("running: "+protocExecutable+" "+args);
+            StringBuilder args=new StringBuilder(protocParams +"--proto_path=\""+getProjectPath(fileObject)+"\" ");
+            Project p=getProject(dataObject.getPrimaryFile());
+            if (isPythonProject(p)){
+              args.append(" --python_out \""+FileUtil.toFile(java_out).toString()+"\"");
+            }
+            if (isCppProject(p)){
+              args.append(" --cpp_out \""+FileUtil.toFile(java_out).toString()+"\"");
+            }
+            if (isJavaProject(p)
+                ||((!isPythonProject(p))&&(!isCppProject(p))&&(!isJavaProject(p)))){
+              args.append(" --java_out \""+FileUtil.toFile(java_out).toString()+"\"");
+            }
+            args.append(" \"" + file.getAbsolutePath() +"\"");
+
+            writer.println("running: "+protocExecutable+" "+args.toString());
             NbProcessDescriptor protocProcessDesc =
-                new NbProcessDescriptor( protocExecutable, args);
+                new NbProcessDescriptor( protocExecutable, args.toString());
             Process process = protocProcessDesc.exec();
 
             /*Removing all old annotations - we will got fresh errors.*/
@@ -124,10 +136,7 @@ public class ProtobufGeneratorRunnable implements Runnable {
             process.waitFor();
 
             writer.println("Exit: "+process.exitValue());
-//            if(process.exitValue()==0)
-//            {
-//                weri
-//            }
+
             /*Reload content of the destination directory*/
             getProject(fileObject).getProjectDirectory().refresh();
             java_out.refresh();
@@ -257,7 +266,25 @@ public class ProtobufGeneratorRunnable implements Runnable {
       FileObject res=FileUtil.toFileObject(FileUtil.normalizeFile(f));
       return res;
     }else{
-      return getJavaSourceDirForNode(dataObject, writer);
+      FileObject javaSrcDir=getJavaSourceDirForNode(dataObject, writer);
+      if(javaSrcDir!=null){
+          return javaSrcDir;
+      }else{
+          //No path - so we will use the same directory as dataObject.file
+          return dataObject.getPrimaryFile().getParent();
+      }
     }
+  }
+
+  private boolean isJavaProject(Project p) {
+    return (p.getClass().toString().toUpperCase().contains("JAVA"));
+  }
+
+  private boolean isPythonProject(Project p) {
+    return (p.getClass().toString().toUpperCase().contains("JAVA"));
+  }
+
+  private boolean isCppProject(Project p) {
+    return (p.getClass().toString().toUpperCase().contains("PYTHON"));
   }
 }
