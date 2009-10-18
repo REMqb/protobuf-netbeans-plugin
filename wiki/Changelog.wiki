@@ -4,6 +4,11 @@
 
 = Changelog =
 
+== Version 2.0.2 (released 2009-10-04) ==
+
+  * Protobuf-generetor module has been released with fixed support for
+C++ and Python projects
+
 == Version 2.0.0 (released 2009-08-26) == 
 
   * Integration with ant build-scripts (extension support)
