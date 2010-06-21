@@ -77,7 +77,7 @@ public class ProtobufCustomizer implements ProjectCustomizer.CompositeCategoryPr
     private final Lookup context;
     private final ProtobufCustomizerPanel panel;
 
-    public StoreActionListener(Lookup context, ProtobufCustomizerPanel panel){
+    public StoreActionListener(Lookup context, ProtobufCustomizerPanel panel) {
       this.context = context;
       this.panel = panel;
     }
