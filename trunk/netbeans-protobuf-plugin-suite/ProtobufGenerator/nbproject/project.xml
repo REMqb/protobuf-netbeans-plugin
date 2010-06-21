@@ -193,6 +193,15 @@
                         <specification-version>2.2</specification-version>
                     </run-dependency>
                 </dependency>
+                <dependency>
+                    <code-name-base>pl.waw.tabor.netbeans.protobuf.libs.protobuf23</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>23</release-version>
+                        <specification-version>2.3</specification-version>
+                    </run-dependency>
+                </dependency>
             </module-dependencies>
             <test-dependencies>
                 <test-type>
