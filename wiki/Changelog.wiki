@@ -4,6 +4,10 @@
 
 = Changelog =
 
+== Version 2.1.0 (released 2010-06-21) ==
+  * Supports Netbeans 6.9
+  * Added protobuf 2.3.0 library
+
 == Version 2.0.2 (released 2009-10-04) ==
 
   * Protobuf-generetor module has been released with fixed support for
