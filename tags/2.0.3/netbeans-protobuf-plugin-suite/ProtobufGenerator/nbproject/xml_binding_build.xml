@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+            *** GENERATED FROM xml_binding_cfg.xml - DO NOT EDIT  ***
+            *** Configure thru JAXB Wizard.                       ***
+        -->
+<project name="JAXBexampleTest_jaxb" default="default" basedir=".">
+
+    <property file="../nbproject/private/private.properties"/>
+    <property file="../nbproject/private/suite-private.properties"/>
+    <property file="../nbproject/suite.properties"/>
+    <fail unless="suite.dir">You must set 'suite.dir' to point to your containing module suite</fail>
+    <property file="${suite.dir}/nbproject/private/platform-private.properties"/>
+    <property file="${suite.dir}/nbproject/platform.properties"/>
+    <macrodef name="property" uri="http://www.netbeans.org/ns/nb-module-project/2">
+        <attribute name="name"/>
+        <attribute name="value"/>
+        <sequential>
+            <property name="@{name}" value="${@{value}}"/>
+        </sequential>
+    </macrodef>
+    <property file="${user.properties.file}"/>
+
+<property file="project.properties"/>
+
+    <target name="xjc-typedef-target" > <!--depends="-init-project"-->
+        <echo message="${jaxbwiz.xjcdef.classpath} ${user.properties.file}"/>
+        <typedef classname="com.sun.tools.xjc.XJCTask" name="xjc" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig">
+            <classpath path="${jaxbwiz.xjcdef.classpath}"/>
+        </typedef>
+    </target>
+    <!--target name="jaxb-clean-code-generation" depends="clean,jaxb-code-generation"/-->
+    <target name="jaxb-code-generation" depends="xjc-typedef-target"><!--,-do-init,-init-macrodef-javac-->
+        <mkdir dir="${build.generated.sources.dir}/jaxb" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache" xmlns:s="http://xml.netbeans.org/schema/JAXBWizConfig"/>
+        <mkdir dir="build/generated/jaxbCache/my_first_binding"/>
+        <xjc destdir="build/generated/jaxbCache/my_first_binding" catalog="catalog.xml">
+            <classpath>
+                <pathelement location="${src.dir}"/>
+                <pathelement path="${jaxbwiz.xjcrun.classpath}"/>
+            </classpath>
+            <arg value="-xmlschema -source 1.0"/>
+            <schema file="../src/pl/waw/tabor/netbeans/protobuf/generator/resources/ProtobufConfig.xsd"/>
+            <depends file="../src/pl/waw/tabor/netbeans/protobuf/generator/resources/ProtobufConfig.xsd"/>
+            <produces dir="../build/generated/jaxbCache/my_first_binding"/>
+        </xjc>
+        <copy todir="../${build.generated.sources.dir}"><!--/jaxb-->
+            <fileset dir="build/generated/jaxbCache/my_first_binding"/>
+        </copy>
+    </target>
+</project>
