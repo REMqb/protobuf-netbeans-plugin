@@ -25,7 +25,7 @@
         </condition>
     </fail>
     <echo  message="HERNESS.DIR:${harness.dir}"/>
-    <property name="run.args" value="-J-XX:MaxPermSize=256m"/>
+    <property name="run.args" value="-J-XX:MaxPermSize=768m"/>
     <echo  message="args: | ${run.args.common} | ${run.args.prepared}| ${run.args} | ${run.args.extra}"/>
     <import file="${harness.dir}/suite.xml"/>
 
