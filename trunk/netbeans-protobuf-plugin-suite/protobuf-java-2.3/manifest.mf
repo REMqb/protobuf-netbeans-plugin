@@ -2,5 +2,4 @@ Manifest-Version: 1.0
 OpenIDE-Module: pl.waw.tabor.netbeans.protobuf.libs.protobuf23/23
 OpenIDE-Module-Implementation-Version: 230
 OpenIDE-Module-Localizing-Bundle: pl/waw/tabor/netbeans/protobuf/libs/protobuf23/Bundle.properties
-OpenIDE-Module-Specification-Version: 2.3
 OpenIDE-Module-Layer: pl/waw/tabor/netbeans/protobuf/libs/protobuf23/layer.xml
