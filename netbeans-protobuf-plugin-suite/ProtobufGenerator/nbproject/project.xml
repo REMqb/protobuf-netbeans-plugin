@@ -167,6 +167,15 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>pl.waw.tabor.netbeans.protobuf.editor</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>2</release-version>
+                        <specification-version>2.1.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>pl.waw.tabor.netbeans.protobuf.libs.protobuf20</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
