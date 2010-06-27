@@ -1,0 +1,5 @@
+/* This is example of protobuf message */
+
+message MessageName{
+    required uint32 messageField=1;
+}
