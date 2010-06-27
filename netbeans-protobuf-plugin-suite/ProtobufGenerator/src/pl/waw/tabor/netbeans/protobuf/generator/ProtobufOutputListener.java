@@ -51,7 +51,7 @@ class ProtobufOutputListener implements OutputListener{
             DataObject dataObject=ProtobufHelper.findDataObjectForFile(file,nodes);
             if (dataObject!=null)
             {
-                LineCookie lc= (LineCookie) dataObject.getCookie(LineCookie.class);
+                LineCookie lc = dataObject.getCookie(LineCookie.class);
                 Line l = lc.getLineSet().getOriginal(lineNumber-1);
                 l.show(Line.ShowOpenType.REUSE_NEW,Line.ShowVisibilityType.FOCUS,colNumber-1);
             }

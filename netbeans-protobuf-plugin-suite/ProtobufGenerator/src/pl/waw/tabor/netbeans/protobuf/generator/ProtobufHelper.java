@@ -10,8 +10,6 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.nodes.Node;
-import javax.xml.bind.JAXBContext;
-import pl.waw.tabor.netbeans.protobuf.generator.jaxb.ProtobufConfig;
 
 /**
  *
@@ -33,7 +31,7 @@ public class ProtobufHelper {
     public static DataObject findDataObjectForFile(String fileName,Node[] nodes) {
         for(Node node:nodes)
         {
-            DataObject d=(DataObject)node.getCookie(DataObject.class);
+            DataObject d = node.getCookie(DataObject.class);
             FileObject fileObject=d.getPrimaryFile();
             File file = FileUtil.toFile(fileObject);
             if (file.toString().endsWith(fileName))
