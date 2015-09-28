@@ -1,4 +1,4 @@
-TOKEN:keyword:("message"|"extend"|"service"|"rpc"|"enum"|"returns"|"option"|"default"|"extensions"|"group")
+TOKEN:keyword:("message"|"extend"|"service"|"rpc"|"enum"|"returns"|"option"|"default"|"extensions"|"group"|"oneof")
 TOKEN:label:("required" | "optional" | "repeated")
 TOKEN:core_type:("double" | "float" | "int32" | "int64" | "uint32" | "uint64"
        | "sint32" | "sint64" | "fixed32" | "fixed64" | "sfixed32" | "sfixed64"
@@ -87,6 +87,7 @@ Package = "package"  DotIdent ";";
 DotIdent= AnyIdent ( "." AnyIdent )*;
 Option = "option" OptionBody ";";
 OptionBody =  DotIdent "=" Constant;
+OneOf = "oneof" "message" OneOfBody;
 Message = "message" MessageName MessageBody;
 Extend = "extend" UserType "{" ( GroupOrField | ";" )* "}";
 Enum = "enum" EnumName EnumBody;
@@ -98,7 +99,8 @@ ServiceBody = "{" ( Option | Rpc | ";" )* "}";
 Rpc = "rpc" AnyIdent "(" ParamUserType ")" "returns" "(" ResUserType ")" ";";
 ParamUserType=UserType;
 ResUserType=UserType;
-MessageBody = "{" ( Enum | Message | Extend | Extensions | GroupOrField | Option | ";" )* "}";
+MessageBody = "{" ( Enum | OneOf | Message | Extend | Extensions | GroupOrField | Option | ";" )* "}";
+OneOfBody = "{" (FieldCont)* "}";
 GroupOrField = <label> (GroupCont | FieldCont);
 GroupCont = "group" <camelIdent> "=" IntLit MessageBody;
 FieldCont = Type AnyIdent "=" IntLit [ "[" FieldOption ( "," FieldOption )* "]" ] ";";
@@ -215,6 +217,11 @@ INDENT ".*\\{"
 FOLD:MessageBody:{
     expand_type_action_name:"Expand Message";
     collapse_type_action_name:"Collapse Message";
+}
+
+FOLD:OneOfBody:{
+    expand_type_action_name:"Expand OneOf";
+    collapse_type_action_name:"Collapse OneOf";
 }
 
 FOLD:ServiceBody:{
